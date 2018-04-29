@@ -36,16 +36,38 @@ public:
 	~Car() {};
 };
 
+Car* renew()
+{}
+
 //класс салона с адресами и названиями
 class Salon
 {
 	string name;
 	string address;
+	Car *car = NULL;
+	int max = 0;
+public:
+	int get_max() { return max; }
+	void show()
+	{
+		cout << "List cars:" << endl;
+		for(int i = 0; i < max; ++i)
+		{
+			cout << i + 1 << '\)';
+			cout << car[i].model << endl;
+		}
+	}
 };
 
 //класс некоторого дома (помещения), в котором может находиться машина (или производиться)
 class House
-{};
+{
+protected:
+	int max;
+	string address;
+	Car* car = NULL;
+	House* next;
+};
 
 //класс помещения, в котором уже находится готовая машина
 class Dealer
