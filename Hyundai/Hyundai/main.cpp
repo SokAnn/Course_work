@@ -57,6 +57,14 @@ public:
 			cout << car[i].model << endl;
 		}
 	}
+	bool read()
+	{
+		ifstream file(FILEsalon);
+		while (file)
+		{
+			renew();
+		}
+	}
 };
 
 //класс некоторого дома (помещения), в котором может находиться машина (или производиться)
