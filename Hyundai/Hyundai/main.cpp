@@ -1,6 +1,7 @@
 #include<iostream>
 #include<Windows.h>
 #include<fstream>
+#include<string>
 
 #define FILEsalon "salon.txt"
 #define FILEdealer "dealer.txt"
@@ -36,8 +37,27 @@ public:
 	~Car() {};
 };
 
-Car* renew()
-{}
+Car* renew(Car** mas, int size, int size_new)
+{
+	//"ловим" исключение
+	if ((size < 0) || (size_new < 0)) { throw 1; }
+	if (size == size_new) { return false; }
+	int i = 0;
+	Car* temp = new Car[size];
+	for (i = 0; i < size; ++i) { temp[i] = (*mas)[i]; }
+	delete[](*mas);
+	if (size_new == 0) { return false; }
+	(*mas) = new Car[size_new];
+	if (size > size_new)
+	{
+		for (i = 0; i < size_new; ++i) { (*mas)[i] = temp[i]; }
+	}
+	else
+	{
+		for (i = 0; i < size; ++i) { (*mas)[i] = temp[i]; }
+	}
+	return false;
+}
 
 //класс салона с адресами и названиями
 class Salon
@@ -59,10 +79,12 @@ public:
 	}
 	bool read()
 	{
+		int count;
 		ifstream file(FILEsalon);
 		while (file)
 		{
-			renew();
+			renew(&car,count+1,count);
+			getline(file, car[count].model);
 		}
 	}
 };
