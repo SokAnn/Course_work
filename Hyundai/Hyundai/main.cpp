@@ -2,6 +2,7 @@
 #include<Windows.h>
 #include<fstream>
 #include<string>
+#include<Windows.h>
 
 #define FILEsalon "salon.txt"
 #define FILEdealer "dealer.txt"
@@ -40,26 +41,28 @@ public:
 Car* renew(Car** mas, int size, int size_new)
 {
 	//"ловим" исключение
-	if ((size < 0) || (size_new < 0)) { throw 1; }
-	if (size == size_new) { return false; }
+	if ((size < 0) || (size_new < 0))  
+		throw 1; 
+	if (size == size_new) 
+		return false; 
 	int i = 0;
 	Car* temp = new Car[size];
-	for (i = 0; i < size; ++i) { temp[i] = (*mas)[i]; }
+	for (i = 0; i < size; ++i) 
+		temp[i] = (*mas)[i];
 	delete[](*mas);
-	if (size_new == 0) { return false; }
+	if (size_new == 0) 
+		return false;
 	(*mas) = new Car[size_new];
 	if (size > size_new)
-	{
-		for (i = 0; i < size_new; ++i) { (*mas)[i] = temp[i]; }
-	}
+		for (i = 0; i < size_new; ++i) 
+			(*mas)[i] = temp[i];
 	else
-	{
-		for (i = 0; i < size; ++i) { (*mas)[i] = temp[i]; }
-	}
+		for (i = 0; i < size; ++i) 
+			(*mas)[i] = temp[i];
 	return false;
 }
 
-//класс салона с адресами и названиями
+//класс салона с адресом и названием
 class Salon
 {
 	string name;
@@ -73,7 +76,7 @@ public:
 		cout << "List cars:" << endl;
 		for(int i = 0; i < max; ++i)
 		{
-			cout << i + 1 << '\)';
+			cout << i + 1 << "\)";
 			cout << car[i].model << endl;
 		}
 	}
@@ -96,16 +99,88 @@ protected:
 	int max;
 	string address;
 	Car* car = NULL;
+	int *count;
 	House* next;
+
+	void buy()
+	{}
+
+public:
+	virtual ~House()
+	{
+		if (next)
+			delete next;
+	}
+
+	bool read(string File, Salon salon)
+	{
+		count = NULL;
+		next = NULL;
+		int c = salon.get_max();
+		ifstream file(File);
+		string str;
+		count = new int(c);
+		c = 0;
+
+		while (file)
+		{
+			getline(file, str);
+			if (!file)
+				break;
+			count[c++] = atoi(str.c_str());
+		}
+	}
+
+	House* setnext(House* house)
+	{
+		next = house;
+		return next;
+	}
+
+	/*void check(int)
+	{}*/
 };
 
 //класс помещения, в котором уже находится готовая машина
-class Dealer
-{};
+class Dealer:public House
+{
+public:
+	Dealer(string file, Salon salon) { read(file, salon); address = "Dealer"; }
+};
 
 //класс производства, на котором собираются машина (она мб уже готова, но не определена к дилеру)
-class Manufactury
-{};
+class Manufactury :public House
+{
+public:
+	Manufactury(string file, Salon salon) { read(file, salon); address = "Manufactury"; }
+};
 
 int main()
-{}
+{
+	int cymb;
+	cout << "Hello word!" << endl;
+	setlocale(LC_ALL, "rus");
+	Sleep(1000);
+	while (1)
+	{
+		system("cls");
+		cout << "	1.Ввод данных о машине" << endl;
+		cout << "	2.Просмотр" << endl;
+		cout << "	3." << endl;
+		cout << "	0.Выход" << endl;
+		cin >> cymb;
+		switch (cymb)
+		{
+		case '0':
+			system("cls");
+			printf("GOOD BYE!!!");
+			Sleep(1000);
+			exit(1);
+			break;
+		case '1':
+
+			break;
+		}
+	}
+	return 0;
+}
